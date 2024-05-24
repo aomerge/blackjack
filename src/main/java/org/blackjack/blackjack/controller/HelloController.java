@@ -1,4 +1,4 @@
-package org.blackjack.blackjack;
+package org.blackjack.blackjack.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

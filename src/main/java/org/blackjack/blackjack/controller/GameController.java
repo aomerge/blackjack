@@ -1,2 +1,4 @@
-package org.blackjack.blackjack.controller;public class GameController {
+package org.blackjack.blackjack.controller;
+
+public class GameController {
 }

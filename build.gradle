@@ -26,7 +26,7 @@ tasks.withType(JavaCompile) {
 
 application {
   mainModule = 'org.blackjack.blackjack'
-  mainClass = 'org.blackjack.blackjack.HelloApplication'
+  mainClass = 'org.blackjack.blackjack.HomeApplication'
 }
 
 javafx {
@@ -38,6 +38,14 @@ dependencies {
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+  // Dependence JavaFX
+  implementation 'org.openjfx:javafx-controls:23-ea+3'
+  implementation 'org.openjfx:javafx-fxml:23-ea+3'
+
+  // Dependence JUnit
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
 
 test {
