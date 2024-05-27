@@ -14,8 +14,21 @@ public class Carts implements ICart {
         return suit;
     }
 
+    public String getSuitName(){
+        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
+        return suits[suit - 1];
+    }
+
     public void setSuit(int suit) {
-        this.suit = suit;
+        try {
+            if (suit >= 1 && suit <= 4){
+                this.suit = suit;
+            }
+            throw new IllegalArgumentException("Invalid suit");
+        }catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+            return;
+        }
     }
 
     public int getCartId() {
