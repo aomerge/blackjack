@@ -2,11 +2,12 @@ package org.blackjack.blackjack.models;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
-public class Player extends Deck {
+public class Player {
     private String name;
-    private final HashSet<Carts> hand = new HashSet<>();
+    protected LinkedList<Carts> hand  = new LinkedList<>();
     private int money;
     private final List<Integer> playsBalance = new ArrayList<>();
 
@@ -37,16 +38,16 @@ public class Player extends Deck {
         this.money = playsBalance.stream().mapToInt(Integer::intValue).sum();
     }
 
-    public HashSet<Carts> startHand() {
+    public LinkedList<Carts> startHand() {
         return hand;
     }
 
-    public HashSet<Carts> setHand(int handSize) {
+    public LinkedList<Carts> setHand(Carts carts) {
+        hand.add(carts);
         return hand;
     }
 
-    public HashSet<Carts> getHand() {
-
+    public LinkedList<Carts> getHand() {
         return hand;
     }
 
