@@ -1,2 +1,4 @@
-package org.blackjack.blackjack.models.interfac;public interface IPlayer {
+package org.blackjack.blackjack.models.interfac;
+
+public interface IPlayer {
 }

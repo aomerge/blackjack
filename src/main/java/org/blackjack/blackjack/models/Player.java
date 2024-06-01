@@ -1,20 +1,18 @@
 package org.blackjack.blackjack.models;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Player {
     private String name;
     protected LinkedList<Carts> hand  = new LinkedList<>();
-    private int money;
     private final List<Integer> playsBalance = new ArrayList<>();
+    private int money ;
+    private Stack<Integer> handSum = new Stack<>();
 
     public Player(String name) {
         this.name = name;
         playsBalance.add(2000);
-        money = playsBalance.get(0);
+        money = playsBalance.stream().mapToInt(Integer::intValue).sum();
     }
 
     public String getName() {
@@ -55,6 +53,21 @@ public class Player {
         playsBalance.add(-balance);
         this.money = playsBalance.stream().mapToInt(Integer::intValue).sum();
 
+    }
+
+    public int getSumHand() {
+        hand.forEach(carts ->{
+            if (carts.getCartId() == 1 && handSum.stream().mapToInt(Integer::intValue).sum() + 11 <= 21){
+                handSum.add(11);
+            }
+            else if (carts.getCartId() > 10){
+                handSum.add(10);
+            }
+            else {
+                handSum.add(carts.getCartId());
+            }
+        });
+        return handSum.stream().mapToInt(Integer::intValue).sum();
     }
 
     @Override
