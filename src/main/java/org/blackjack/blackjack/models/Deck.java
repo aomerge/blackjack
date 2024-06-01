@@ -6,7 +6,9 @@ import java.util.*;
 
 public class Deck implements IDeck{
 
+    private  LinkedList<String> Logger = new LinkedList<>();
     protected Stack<Carts> deck = new Stack<>();
+    public LinkedList<Carts> hand = new LinkedList<>();
 
     public Deck() {
         createDeck();
@@ -26,7 +28,6 @@ public class Deck implements IDeck{
     public Stack<Carts> shuffleDeck (){
         Collections.shuffle(deck);
         return deck;
-
     }
 
     public String resetDeck(){
@@ -36,10 +37,10 @@ public class Deck implements IDeck{
             }
             createDeck();
             shuffleDeck();
-            System.out.println("Deck created and shuffled hg");
             return  "Deck created and shuffled";
         }catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            Logger.add(e.getMessage());
+
             return( e.getMessage());
         }
     }
@@ -48,21 +49,26 @@ public class Deck implements IDeck{
         deck.remove(0);
     }
 
-    public <T extends String> LinkedList<Carts>  handoutCard(){
+    public LinkedList<Carts>  handoutCard(){
         try {
             if(deck.isEmpty()){
                 throw new IllegalArgumentException("Deck is empty");
             }
-            LinkedList<Carts> hand = new LinkedList<>();
-            hand.add(deck.get(0));
-            hand.add(deck.get(1));
-            deck.remove(0);
-            deck.remove(1);
+
+            for (int i = 0; i < 2; i++) {
+                hand.add(deck.get(0));
+                deck.remove(0);
+            }
             return hand;
         }catch (IllegalArgumentException e){
-            System.out.println(e.getMessage());
+            Logger.add(e.getMessage());
             return null;
         }
+    }
+    public LinkedList<Carts> setHand() {
+        hand.add(deck.get(0));
+        deck.remove(0);
+        return hand;
     }
 
     @Override

@@ -26,7 +26,6 @@ public class DeckTest {
         Stack<Carts> deck2List = new Stack<>();
         deck2List.addAll(deck2.getDeck());
 
-        System.out.println(deck1List);
         assertNotEquals(deck1List, deck2List);
     }
 
