@@ -65,15 +65,37 @@ public class Deck implements IDeck{
             return null;
         }
     }
+
     public LinkedList<Carts> setHand() {
-        hand.add(deck.get(0));
+        hand.add(this.deck.get(0));
         deck.remove(0);
         return hand;
+    }
+
+    public void removeHand(){
+        hand.clear();
     }
 
     @Override
     public Stack<Carts> getDeck() {
         return deck;
+    }
+
+    public LinkedList<Carts> getHand() {
+        return hand;
+    }
+
+    public LinkedList<String> getLogger() {
+        return Logger;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Deck{" +
+                "deck=" + deck +
+                '}';
     }
 
 }
