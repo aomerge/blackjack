@@ -1,8 +1,9 @@
 package org.blackjack.blackjack.models;
 
 import java.util.*;
+import org.blackjack.blackjack.models.interfac.IPlayer;
 
-public class Player {
+public class Player implements IPlayer{
     private String name;
     protected LinkedList<Carts> hand  = new LinkedList<>();
     private final List<Integer> playsBalance = new ArrayList<>();
@@ -40,6 +41,10 @@ public class Player {
         return hand;
     }
 
+    public void removeHandSum() {
+        handSum.clear();
+    }
+
     public LinkedList<Carts> setHand(Carts carts) {
         hand.add(carts);
         return hand;
@@ -56,18 +61,32 @@ public class Player {
     }
 
     public int getSumHand() {
-        hand.forEach(carts ->{
-            if (carts.getCartId() == 1 && handSum.stream().mapToInt(Integer::intValue).sum() + 11 <= 21){
-                handSum.add(11);
-            }
-            else if (carts.getCartId() > 10){
+        List<Integer> handSum = new ArrayList<>();
+        sumHand(handSum);
+        int totalSum = handSum.stream().mapToInt(Integer::intValue).sum();
+        return totalSum;
+    }
+
+    private void sumHand(List<Integer> handSum){
+        for (Carts cart : hand) {
+            if (cart.getCartId() == 1) {
+                int potentialSum = handSum.stream().mapToInt(Integer::intValue).sum() + 11;
+                if (potentialSum <= 21) {
+                    handSum.add(11);
+                } else {
+                    handSum.add(1);
+                }
+            } else if (cart.getCartId() > 10) {
                 handSum.add(10);
+            } else {
+                handSum.add(cart.getCartId());
             }
-            else {
-                handSum.add(carts.getCartId());
-            }
-        });
-        return handSum.stream().mapToInt(Integer::intValue).sum();
+        }
+    }
+
+    public void setAllSumHand(int number) {
+        handSum.clear();
+        handSum.add(number);
     }
 
     @Override
@@ -77,5 +96,10 @@ public class Player {
                 ", score=" + money +
                 ", balance=" + playsBalance +
                 '}';
+    }
+
+    @Override
+    public void removeHand() {
+
     }
 }
