@@ -3,14 +3,33 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.text.Text?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.blackjack.blackjack.controller.GameController">
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane  xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.blackjack.blackjack.controller.GameController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
-    <ListView fx:id="deckView" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0"/>
-</VBox>
+    <Text text="Welcome to Blackjack!"/>
+    <!-- Cartas del dealer -->
+    <Rectangle fx:id="dealerCard1" x="300" y="50" width="50" height="70" fill="RED" />
+    <Rectangle fx:id="dealerCard2" x="360" y="50" width="50" height="70" fill="GRAY" />
+
+    <!-- Cartas del jugador -->
+    <Rectangle fx:id="playerCard1" x="300" y="400" width="50" height="70" fill="BLUE" />
+    <Rectangle fx:id="playerCard2" x="360" y="400" width="50" height="70" fill="RED" />
+
+    <!-- Etiquetas de dinero y apuesta -->
+    <Label fx:id="moneyLabel" layoutX="650" layoutY="20" text="Money" />
+    <Label fx:id="betLabel" layoutX="720" layoutY="20" text="Apuesta" />
+
+    <!-- Botones de acción -->
+    <Button fx:id="hitButton" layoutX="650" layoutY="500" text="Hit" />
+    <Button fx:id="standButton" layoutX="700" layoutY="500" text="Stand" />
+    <Button fx:id="doubleButton" layoutX="760" layoutY="500" text="Double" />
+</AnchorPane>
