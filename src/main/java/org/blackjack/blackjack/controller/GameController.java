@@ -1,15 +1,18 @@
 package org.blackjack.blackjack.controller;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 import org.blackjack.blackjack.models.Deck;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import java.io.IOException;
+import java.net.URL;
+import org.blackjack.blackjack.components.VBoxController;
 
 public class GameController {
     @FXML
@@ -21,6 +24,28 @@ public class GameController {
         deck = new Deck();
         start(new Stage());
         new Stage();
+    }
+    @FXML
+    private GridPane container;
+
+    @FXML
+    private void handleShowVBoxButtonAction() {
+        try {
+            URL resource  =  getClass().getResource("/org/blackjack/blackjack/components/VBox.fxml");
+            if( resource == null ){
+                    throw new IOException("Resource not found: /main/component/VBoxExample.fxml");
+            }
+            Node vBox = FXMLLoader.load(resource);
+            container.getChildren().setAll(vBox);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleResetButtonAction() {
+        container.getChildren().clear();
     }
 
     public void start(Stage primaryStage) {
