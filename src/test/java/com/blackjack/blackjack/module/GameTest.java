@@ -107,6 +107,7 @@ public class GameTest {
         game.setPlayers(player);
         game.startGame();
         game.setAddCart("John");
+        game.NxtMove("John", 0, 100);
         game.getStand("John");
 
         int sumTest =game.getCasino().getHand().stream().mapToInt(Carts ->{
@@ -133,11 +134,37 @@ public class GameTest {
         boolean isLose = loggerSearching.stream().anyMatch("lose"::equals);
 
         if(isLose) {
-            assertEquals(102000 + 1000, game.getCasino().getMoney());
+            assertEquals(102000 - 100, game.getCasino().getMoney());
         } else {
-            assertEquals(102000 - 1000, game.getCasino().getMoney());
+            assertEquals(102000 + 100, game.getCasino().getMoney());
         }
     }
 
+    @Test
+    public void testNxtMove() {
+        Deck deck = new Deck();
+        Player player = new Player("John");
+        deck.shuffleDeck();
+        IGame game = new Game(deck);
+        game.setPlayers(player);
+        game.startGame();
+        game.setAddCart("John");
+        game.NxtMove("John", 0, 100);
+        game.getStand("John");
+
+        if (game.getLogger().get(1).contains("lose")) {
+            assertEquals(102000 + 100, game.getCasino().getMoney());
+            assertEquals(2000 - 100, player.getMoney());
+        }
+        if (game.getLogger().get(1).contains("win") ) {
+            assertEquals(102000 - 100, game.getCasino().getMoney());
+            assertEquals(2000 + 100, player.getMoney());
+        }
+        if(game.getLogger().get(1).contains("draw")) {
+            assertEquals(102000, game.getCasino().getMoney());
+        }
+        assertEquals(200, game.getPiles().getBet());
+
+    }
 
 }

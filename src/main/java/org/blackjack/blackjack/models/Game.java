@@ -15,7 +15,10 @@ public class Game implements IGame {
     private List<Player> players = new ArrayList<>();
     private IPiles piles = new Piles();
     private IDeck DeckGame ;
+    private int SussesCode = 2255;
+    private int ErrorCode = 2530;
     private LinkedList<String> Logger = new LinkedList<>();
+
 
 
     public Game(IDeck deck) {
@@ -70,30 +73,48 @@ public class Game implements IGame {
         return DeckGame.getDeck();
     }
 
-    public void NxtMove(String namePlayer, String move){
+    public IPiles getPiles(){
+        return piles;
+    }
+
+    /* this method generates the next move of a round of the game
+    *
+    * */
+    public void NxtMove(String namePlayer, int move, int countMove  ){
         switch (move){
-            case "hit":
-                this.getHit(namePlayer);
+            case 0:
+                Casino.removeBalance(countMove );
+                setRemoveMoneyPlayer(countMove);
+                piles.setBet(countMove * 2);
                 break;
-            case "stand":
+            case 1:
                 this.getStand(namePlayer);
                 break;
-            case "addCart":
+            case 2:
                 this.setAddCart(namePlayer);
                 break;
-            case "nextMove":
-                this.setNextMove();
+            case 3:
                 break;
         }
     }
 
-    private void BetPvt(String namePlayer){
-
+    private void setRemoveMoneyPlayer( int money ){
+        try {
+            if (players.size() == 0){
+                throw  new Exception("Is necesario añadir el set player");
+            }
+            for (Player player : players){
+                if (player.getMoney() < money){
+                    throw new Exception("No tienes suficiente dinero");
+                }
+                player.removeBalance(money);
+            }
+        }catch (Exception e){
+            setLogger(ErrorCode ,e.getMessage(), "setRemoveMoneyPlayer");
+        }
     }
 
-    private void NxtMovePvt(String namePlayer, String move){
 
-    }
 
     public void getAddCart(){
         Deck deck =  new Deck();
@@ -116,48 +137,75 @@ public class Game implements IGame {
     }
 
     public void getStand  (String namePlayer){
-        for (Player player : players){
-            if (player.getName().equals(namePlayer)){
-                int numberPlayer = player.getSumHand();
-                player.removeHandSum();
-                // sum cart
-                do {
-                    if (Casino.getSumHand() >= 21 || numberPlayer > 21) {
-                        Casino.removeHandSum();
+        String reference = "getStand";
+        int SumMoney = this.piles.getPile().stream().mapToInt(Integer::intValue).sum();
+        try {
+            for (Player player : players){
+                if (player.getName().equals(namePlayer)){
+                    // player
+                    int numberPlayer = player.getSumHand();
+                    player.removeHandSum();
+
+                    // sum cart
+                    do {
+                        if (Casino.getSumHand() >= 21 || numberPlayer > 21) {
+                            Casino.removeHandSum();
+                            break;
+                        }
+
+                        if(DeckGame.getHand().isEmpty()){
+                            DeckGame.setHand();
+                            Casino.setHand(DeckGame.getHand().getFirst());
+                            this.getStand(namePlayer);
+                            break;
+                        }
+
+                        break;
+
+                    } while (Casino.getSumHand() < 17);
+
+                    // get winner
+
+                    if(numberPlayer > 21 && Casino.getSumHand() < numberPlayer || Casino.getSumHand() <= 21 && Casino.getSumHand() > numberPlayer || Casino.getSumHand()<= 21 && numberPlayer > 21){
+                        if (getLogger().size() < 2){
+                            Casino.setMoney(SumMoney);
+                            String messenger = "You lose";
+                            setLogger(SussesCode,messenger, reference);
+                            break;
+                        }
+                    }
+
+                    if (numberPlayer == Casino.getSumHand() && numberPlayer <= 21 && Casino.getSumHand() <= 21){
+                        String messenger = "Yours Draw";
+                        player.setMoney(SumMoney/2);
+                        Casino.setMoney(SumMoney/2);
+                        setLogger(SussesCode,messenger, reference);
                         break;
                     }
 
-                    if(DeckGame.getHand().isEmpty()){
-                        DeckGame.setHand();
-                        Casino.setHand(DeckGame.getHand().getFirst());
-                        this.getStand(namePlayer);
+                    if (numberPlayer > Casino.getSumHand() && numberPlayer <= 21 || Casino.getSumHand() > 21 && numberPlayer <= 21 ){
+                        if (getLogger().size() < 2){
+                            player.setMoney(SumMoney);
+                            String messenger = "You win";
+                            setLogger(SussesCode,messenger, reference);
+                        }
                         break;
                     }
 
                     break;
-
-                } while (Casino.getSumHand() < 17);
-
-                // get winner
-                if(numberPlayer > 21 && Casino.getSumHand() < numberPlayer){
-                    player.removeBalance(1000);
-                    Casino.setMoney(1000);
-                    Logger.add( 2255 + " You lose "+ ", Class : getStand" );
-                } else if (numberPlayer == Casino.getSumHand()) {
-                    System.out.println("You lose "+ player.getMoney());
-                    Casino.removeHandSum();
-                    Logger.add( 2255 + " Draw "+ ", Class : getStand" );
-                } else {
-                    Casino.removeBalance(1000);
-                    player.setMoney(1000);
-                    Logger.add( 2255 + " Messanger:  You win  "+ ", Class : getStand");
-                    System.out.println("You win "+ player.getMoney());
                 }
-
             }
+
+        }catch ( Exception e){
+            setLogger(ErrorCode,e.getMessage(), reference);
         }
+        // const
+
     }
 
+    private void setLogger(int code, String messenger, String reference){
+        Logger.add(String.format("{ Code: %d , messenger: %s, Reference: %s }", SussesCode, messenger,  reference ));
+    }
     public void setAddCart(String namePlayer){
         DeckGame.setHand();
         for (Player player : players){
@@ -168,16 +216,10 @@ public class Game implements IGame {
         DeckGame.removeHand();
     }
 
-    public void setNextMove(){
-
-
-    }
 
     private void setMoneyHomePlayer(){
         Casino.setMoney(100000);
     }
-
-    public void createPiles(){}
 
     public void endGame(){}
 

@@ -16,4 +16,6 @@ public interface IGame {
     List<Carts> getDeckGame();
     void setAddCart(String namePlayer);
     void getStand(String namePlayer);
+    default void NxtMove(String namePlayer, int move, int countMove ){};
+    IPiles getPiles();
 }
