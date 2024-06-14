@@ -12,35 +12,69 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.TextField?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.blackjack.blackjack.controller.GameController">
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.image.ImageView?>
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.blackjack.blackjack.controller.GameController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
     <!-- Cartas del dealer -->
-    <GridPane hgap="10" vgap="10" maxWidth="1000"  style="-fx-background-color: yellow;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-        <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" />
-        </padding>
-        <Button fx:id="startButton"  layoutX="600" layoutY="500" text="Start" onAction="#handleShowVBoxButtonAction" />
-        <Button fx:id="resetButton" GridPane.columnIndex="2" GridPane.rowIndex="0" layoutX="600" layoutY="500" text="Reset" onAction="#handleResetButtonAction" />
-        <GridPane fx:id="container" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <GridPane alignment="TOP_CENTER"  hgap="10" vgap="10" maxWidth="1000"  style="-fx-background-color: yellow;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="800.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="800.0" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+
+        <VBox fx:id="dealerCards" GridPane.columnIndex="0" GridPane.rowIndex="0"   >
+            <GridPane hgap="5" vgap="5" alignment="BOTTOM_LEFT">
+                <padding>
+                    <Insets  left="10.0" right="10.0" top="5.0"/>
+                </padding>
+                <Button fx:id="startButton"  text="Start" onAction="#handleShowVBoxButtonAction" style=" -fx-border-color: transparent; -fx-border-width: 0; -fx-effect: null;" >
+                    <padding>
+                        <Insets bottom="5.0" left="20.0" right="20.0" top="5.0"/>
+                    </padding>
+                </Button>
+                <Button style=" -fx-border-color: transparent; -fx-border-width: 0; -fx-effect: null;" fx:id="resetButton" GridPane.columnIndex="2" GridPane.rowIndex="0" layoutX="700" layoutY="500" text="Reset" onAction="#handleResetButtonAction" >
+                    <padding>
+                        <Insets bottom="5.0" left="15.0" right="15.0" top="5.0"/>
+                    </padding>
+                </Button>
+            </GridPane>
+        </VBox>
+
+        <VBox alignment="TOP_RIGHT" GridPane.columnIndex="1" >
+            <padding>
+                <Insets top="5.0" right="10"/>
+            </padding>
+            <GridPane maxWidth="400" alignment="TOP_RIGHT"  hgap="10" vgap="10" style="-fx-background-color: pink; -fx-background-radius:4;" >
+                <padding>
+                    <Insets bottom="10.0" left="70.0" right="5.0" top="5.0"/>
+                </padding>
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0"  minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <VBox GridPane.columnIndex="0">
+                    <Text fx:id="playerScore" text="Player Score: 0" />
+                </VBox>
+                <VBox GridPane.columnIndex="1">
+                    <Text text="Player Score: sa" />
+                </VBox>
+            </GridPane>
+        </VBox>
+
+        <AnchorPane prefHeight="500.0" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" style="-fx-background-color: orange;">
+            <VBox prefHeight="80" prefWidth="60" style="-fx-background-color: green;">
+                <ImageView fx:id="imageView"  preserveRatio="true" VBox.vgrow="ALWAYS"/>
+            </VBox>
+        </AnchorPane>
+
+        <AnchorPane fx:id="container" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-background-color: red;"  />
+
     </GridPane>
 
-
-    <Rectangle fx:id="dealerCard1" x="300" y="50" width="50" height="70" fill="RED" />
-    <Rectangle fx:id="dealerCard2" x="360" y="50" width="50" height="70" fill="GRAY" />
-
-    <!-- Cartas del jugador -->
-    <Rectangle fx:id="playerCard1" x="300" y="400" width="50" height="70" fill="BLUE" />
-    <Rectangle fx:id="playerCard2" x="360" y="400" width="50" height="70" fill="RED" />
-
-    <!-- Etiquetas de dinero y apuesta -->
-    <Label fx:id="moneyLabel" layoutX="650" layoutY="20" text="Money" />
-    <Label fx:id="betLabel" layoutX="720" layoutY="20" text="Apuesta" />
-
-    <!-- Botones de acción -->
-    <Button fx:id="hitButton" layoutX="650" layoutY="500" text="Hit" />
-    <Button fx:id="standButton" layoutX="700" layoutY="500" text="Stand" />
-    <Button fx:id="doubleButton" layoutX="760" layoutY="500" text="Double" />
-</AnchorPane>
+</StackPane >

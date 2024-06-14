@@ -1,7 +1,10 @@
 package org.blackjack.blackjack.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import org.blackjack.blackjack.models.Deck;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -12,26 +15,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
-import org.blackjack.blackjack.components.VBoxController;
 
 public class GameController {
-    @FXML
-    private ListView<String> deckView;
-
-    private Deck deck;
-
-    public void initialize() {
-        deck = new Deck();
-        start(new Stage());
-        new Stage();
-    }
-    @FXML
-    private GridPane container;
 
     @FXML
     private void handleShowVBoxButtonAction() {
         try {
-            URL resource  =  getClass().getResource("/org/blackjack/blackjack/components/VBox.fxml");
+            URL resource  =  getClass().getResource("/org/blackjack/blackjack/components/TableGame.fxml");
             if( resource == null ){
                     throw new IOException("Resource not found: /main/component/VBoxExample.fxml");
             }
@@ -42,7 +32,6 @@ public class GameController {
             e.printStackTrace();
         }
     }
-
     @FXML
     private void handleResetButtonAction() {
         container.getChildren().clear();
@@ -94,32 +83,47 @@ public class GameController {
         //primaryStage.show();
     }
 
-    @FXML
-    private Rectangle dealerCard1;
+    public void initialize() {
+        deck = new Deck();
+        start(new Stage());
+        new Stage();
+        image();
+    }
+
+    private void image(){
+        URL resource = getClass().getResource("/org/blackjack/blackjack/image/cartEnd.png");
+        Image image = new Image(resource.toString());
+        imageView.setImage(image);
+
+        // Ajustar la imagen al tamaño del ImageView
+        imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
+        imageView.setCache(true);
+
+        // Ajustar el tamaño del ImageView al tamaño de la ventana
+        imageView.fitWidthProperty().bind(imageView.getScene().widthProperty());
+        imageView.fitHeightProperty().bind(imageView.getScene().heightProperty());
+
+    }
+
+    // Elements
 
     @FXML
-    private Rectangle dealerCard2;
+    private ImageView imageView;
 
     @FXML
-    private Rectangle playerCard1;
+    private ListView<String> deckView;
+
+    private Deck deck;
 
     @FXML
-    private Rectangle playerCard2;
+    private AnchorPane container;
 
     @FXML
-    private Label moneyLabel;
+    private Pane PaneStart;
 
     @FXML
-    private Label betLabel;
-
-    @FXML
-    private Button hitButton;
-
-    @FXML
-    private Button standButton;
-
-    @FXML
-    private Button doubleButton;
+    private Button startButton;
 }
 
 
