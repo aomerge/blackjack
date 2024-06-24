@@ -24,7 +24,3 @@ This is a simple blackjack game that can be played in the terminal. The game is 
 ## How to Play
 
 To play the game, run the following command in the terminal:
-
-```bash
-
-```
